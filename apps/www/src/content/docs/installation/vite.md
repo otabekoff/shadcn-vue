@@ -44,14 +44,16 @@ Install `tailwindcss` and its peer dependencies, then generate your `tailwind.co
 
   #### `vite.config`
 
-  ```typescript {5,6,9-13}
-  import path from 'node:path'
-  import vue from '@vitejs/plugin-vue'
-  import autoprefixer from 'autoprefixer'
+  ```typescript {3,4,11-15}
+  import { fileURLToPath, URL } from 'node:url'
 
+  import autoprefixer from 'autoprefixer'
   import tailwind from 'tailwindcss'
+
+  import vue from '@vitejs/plugin-vue'
   import { defineConfig } from 'vite'
 
+  // https://vite.dev/config/
   export default defineConfig({
     css: {
       postcss: {
@@ -61,7 +63,7 @@ Install `tailwindcss` and its peer dependencies, then generate your `tailwind.co
     plugins: [vue()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src'),
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
   })
@@ -121,27 +123,29 @@ Add the code below to the vite.config.ts so your app can resolve paths without e
 npm i -D @types/node
 ```
 
-```typescript {15-19}
-import path from 'node:path'
-import vue from '@vitejs/plugin-vue'
-import autoprefixer from 'autoprefixer'
+```typescript {17-20}
+  import { fileURLToPath, URL } from 'node:url'
 
-import tailwind from 'tailwindcss'
-import { defineConfig } from 'vite'
+  import autoprefixer from 'autoprefixer'
+  import tailwind from 'tailwindcss'
 
-export default defineConfig({
-  css: {
-    postcss: {
-      plugins: [tailwind(), autoprefixer()],
+  import vue from '@vitejs/plugin-vue'
+  import { defineConfig } from 'vite'
+
+  // https://vite.dev/config/
+  export default defineConfig({
+    css: {
+      postcss: {
+        plugins: [tailwind(), autoprefixer()],
+      },
     },
-  },
-  plugins: [vue()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
+    plugins: [vue()],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
     },
-  },
-})
+  })
 ```
 
 ### Delete default Vite styles
